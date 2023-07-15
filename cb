@@ -1,0 +1,41 @@
+# !/bin/sh
+#
+# cb: Clipboard the contents of a file
+# COPYRIGHT: 15.07.2022, Timo Grautstueck
+#
+
+print_usage() {
+	echo -e "Usage: cb FILE"
+	echo -e "Author: Timo Grautstueck <timo.gr@hotmail.de>"
+}
+
+clipboard() {
+        # TODO: Maybe check if this errors
+        xclip -i -selection clipboard < $1
+}
+
+if [ $# -ne 1 ]
+then
+	# Redirect this to stderr
+	echo -e "Just one argument (FILE) required!\n" >&2
+	print_usage
+	exit 1
+fi
+
+if [ "$1" == "--help" ];
+then
+	echo -e "Copy the contents of a file to the clipboard.\n"
+	print_usage
+	exit 0
+fi
+
+if [ -f $1 ]
+then
+	clipboard $1
+	exit 0
+else
+	# Redirect this to stderr
+	echo -e "The Argument need to be an existing file!\n" >&2
+	print_usage
+	exit 1
+fi
